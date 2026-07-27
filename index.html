@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Findr — Campus Lost & Found</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="brand">
+    <div class="brand-icon"><i class="fa-solid fa-magnifying-glass"></i></div>
+    <div class="brand-text"><div class="top">FINDR</div><div class="bottom">CAMPUS LOST &amp; FOUND</div></div>
+  </div>
+  <div class="nav-links" id="navLinks">
+    <a data-page="home" class="active" onclick="showPage(event,'home')">Home</a>
+    <a data-page="board-lost" onclick="showBoardPage(event,'lost')">Lost Items</a>
+    <a data-page="board-found" onclick="showBoardPage(event,'found')">Found Items</a>
+    <div class="nav-dropdown" id="categoriesDropdown">
+      <a href="#" onclick="toggleCategoryDropdown(event)">Categories <i class="fa-solid fa-chevron-down" style="font-size:10px;margin-left:4px;"></i></a>
+      <div class="dropdown-menu" id="categoryDropdownMenu"></div>
+    </div>
+    <a data-page="myitems" onclick="showPage(event,'myitems')">Dashboard</a>
+    <a data-page="about" onclick="showPage(event,'about')">About Us</a>
+    <a data-page="admin" id="adminNavLink" class="hidden" onclick="showPage(event,'admin')">Admin</a>
+  </div>
+  <button class="hamburger-btn" id="hamburgerBtn" onclick="toggleMobileNav()"><i class="fa-solid fa-bars"></i></button>
+  <div class="nav-actions">
+    <span id="guestActions">
+      <button class="link-btn" style="color:var(--ink-500);" onclick="openModal('adminLoginModal')"><i class="fa-solid fa-user-shield"></i> Admin Login</button>
+      <button class="btn btn-outline" onclick="openModal('loginModal')"><i class="fa-regular fa-user"></i> Login</button>
+      <button class="btn btn-primary" onclick="openModal('registerModal')"><i class="fa-solid fa-user-plus"></i> Register</button>
+    </span>
+    <span id="userActions" class="hidden" style="display:flex;align-items:center;gap:14px;">
+      <div class="user-chip" onclick="showPage(null,'myitems')">
+        <div class="avatar" id="navAvatar">SG</div>
+        <div><div class="name" id="navUserName">Sarthak Gaikwad</div><div class="zprn" id="navUserZprn">ZPRN2201</div></div>
+      </div>
+      <button class="link-btn" onclick="logout()">Logout</button>
+    </span>
+  </div>
+</nav>
+
+<!-- ============================================================ HOME (image 4 layout) ============================================================= -->
+<div id="homePage">
+  <header class="hero">
+    <div class="hero-grid">
+      <div>
+        <h1>Lost Something?<br><span class="accent">We'll Help You Find It.</span></h1>
+        <p>A smart and easy way to report, find and claim lost &amp; found items on campus.</p>
+        <div class="hero-cta">
+          <button class="btn btn-primary" style="padding:13px 20px;" onclick="startWizard('lost')"><i class="fa-regular fa-image"></i> Report Lost Item</button>
+          <button class="btn btn-outline" style="padding:13px 20px;" onclick="startWizard('found')"><i class="fa-solid fa-briefcase"></i> Report Found Item</button>
+        </div>
+        <div class="trust"><i class="fa-solid fa-shield-halved"></i> Trusted by students &amp; staff across campus</div>
+      </div>
+      <div class="hero-art">
+        <div class="badge-pin"><i class="fa-solid fa-location-dot"></i> Let's get it back!</div>
+        <div class="items"><i class="fa-solid fa-backpack"></i><i class="fa-solid fa-bottle-water"></i><i class="fa-solid fa-id-badge"></i></div>
+      </div>
+    </div>
+    <div class="search-bar">
+      <input type="text" id="homeSearchInput" placeholder="Search for lost or found items...">
+      <div class="search-cat-wrap">
+        <i class="fa-solid fa-layer-group"></i>
+        <select id="homeSearchCategory"><option value="">All Categories</option></select>
+      </div>
+      <button class="btn btn-primary" onclick="homeSearch()"><i class="fa-solid fa-magnifying-glass"></i> Search</button>
+    </div>
+  </header>
+
+  <section class="categories" id="homeCategories"></section>
+
+  <div class="section-head"><h2>Recently Posted Items</h2><a href="#" onclick="showBoardPage(event,'all')">View All →</a></div>
+  <section class="item-grid" id="homeGrid"></section>
+  <div class="wave"></div>
+</div>
+
+<!-- ============================================================ ABOUT US ============================================================= -->
+<div class="page hidden" id="aboutPage">
+  <div class="about-banner">
+    <h1>About <span class="accent">Us</span></h1>
+    <p>We're a bunch of passionate students who love solving real problems with code. Findr started as a college internship project, but we built it like we'd want to actually use it — simple, fast, and genuinely helpful for anyone who's ever lost (or found) something on campus.</p>
+  </div>
+  <div class="section-head" style="padding:0;margin-top:0;"><h2>Meet the Team</h2></div>
+  <div class="team-grid" id="teamGrid" style="margin-top:16px;">
+    <div class="team-card">
+      <div class="team-avatar">OP</div>
+      <h4>Om Ashok Paul</h4>
+      <div class="zprn">125UCO1362</div>
+      <div style="font-size:11.5px;color:var(--ink-500);font-style:italic;margin-top:8px;">"Carpe diem"</div>
+      <div class="socials">
+        <a href="mailto:ompaul1308@gmail.com" title="Email"><i class="fa-regular fa-envelope"></i></a>
+        <a href="https://www.linkedin.com/in/om-paul-607829394" target="_blank" rel="noopener" title="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+        <a href="https://github.com/ompaul6767-ctrl" target="_blank" rel="noopener" title="GitHub"><i class="fa-brands fa-github"></i></a>
+      </div>
+    </div>
+    <div class="team-card">
+      <div class="team-avatar">VK</div>
+      <h4>Ved Jitendra Kale</h4>
+      <div class="zprn">125UCO1091</div>
+      <div style="font-size:11.5px;color:var(--ink-500);font-style:italic;margin-top:8px;">"Interested in tech"</div>
+      <div class="socials">
+        <a href="mailto:vedkale98@gmail.com" title="Email"><i class="fa-regular fa-envelope"></i></a>
+        <a href="https://www.linkedin.com/in/ved-kale-294230380" target="_blank" rel="noopener" title="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+        <a href="https://github.com/vedkale98-bit" target="_blank" rel="noopener" title="GitHub"><i class="fa-brands fa-github"></i></a>
+      </div>
+    </div>
+    <div class="team-card">
+      <div class="team-avatar">PD</div>
+      <h4>Pratik Deshmukh</h4>
+      <div class="zprn">125UCO1400</div>
+      <div style="font-size:11.5px;color:var(--ink-500);font-style:italic;margin-top:8px;">"Passionate About Coding &amp; Problem Solving..."</div>
+      <div class="socials">
+        <a href="mailto:pratikdeshmukh4405@gmail.com" title="Email"><i class="fa-regular fa-envelope"></i></a>
+        <a href="https://www.linkedin.com/in/pratik-deshmukh-22ab9a39b/" target="_blank" rel="noopener" title="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+        <a href="https://github.com/pratik-deshmukh45" target="_blank" rel="noopener" title="GitHub"><i class="fa-brands fa-github"></i></a>
+      </div>
+    </div>
+    <div class="team-card">
+      <div class="team-avatar">SG</div>
+      <h4>Sarthak Suresh Gawande</h4>
+      <div class="zprn">125UCO1203</div>
+      <div style="font-size:11.5px;color:var(--ink-500);font-style:italic;margin-top:8px;">"Passionate about exploring"</div>
+      <div class="socials">
+        <a href="mailto:sarthakgawande870@gmail.com" title="Email"><i class="fa-regular fa-envelope"></i></a>
+        <a href="https://www.linkedin.com/in/sarthak-gawande-7436123a5" target="_blank" rel="noopener" title="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+        <a href="https://github.com/sarthak-gawande870" target="_blank" rel="noopener" title="GitHub"><i class="fa-brands fa-github"></i></a>
+      </div>
+    </div>
+    <div class="team-card">
+      <div class="team-avatar">OK</div>
+      <h4>Omkar Keshav Kharat</h4>
+      <div class="zprn">125UCO1189</div>
+      <div style="font-size:11.5px;color:var(--ink-500);font-style:italic;margin-top:8px;">"Passionate about exploring"</div>
+      <div class="socials">
+        <a href="mailto:omkarkkharat07@gmail.com" title="Email"><i class="fa-regular fa-envelope"></i></a>
+        <a href="https://www.linkedin.com/in/omkar-kharat-941761406" target="_blank" rel="noopener" title="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+        <a href="https://github.com/omkarkkharat07-hub" target="_blank" rel="noopener" title="GitHub"><i class="fa-brands fa-github"></i></a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ BOARD ============================================================= -->
+<div class="page hidden" id="boardPage">
+  <div class="page-hero" id="boardHero">
+    <div><h1 id="boardTitle">The Board</h1><p id="boardSub">Browse everything reported as lost or found on campus.</p></div>
+    <div class="art" id="boardIcon"><i class="fa-solid fa-clipboard-list"></i></div>
+  </div>
+  <div class="filter-row">
+    <input type="text" id="boardSearch" placeholder="Search by item name, location, description..." oninput="renderBoard()">
+    <select id="boardStatus" onchange="renderBoard()"><option value="">All Status</option><option value="lost">Lost</option><option value="found">Found</option><option value="claimed">Returned</option></select>
+    <select id="boardCategory" onchange="renderBoard()"><option value="">All Categories</option></select>
+    <select id="boardLocation" onchange="renderBoard()"><option value="">All Locations</option></select>
+    <button class="btn btn-primary" onclick="renderBoard()"><i class="fa-solid fa-magnifying-glass"></i> Search</button>
+  </div>
+  <div class="chip-row" id="boardChips"></div>
+  <div class="results-row"><span id="boardCount">Showing 0 items</span><span>Sorted by most recent</span></div>
+  <div class="board-grid" id="boardGrid"></div>
+</div>
+
+<!-- ============================================================ REPORT WIZARD ============================================================= -->
+<div class="page hidden" id="reportPage">
+  <div class="wiz-hero" id="wizHero">
+    <div><h1 id="wizHeroTitle">Found Something?<br><span class="accent">Let's Reunite It!</span></h1>
+      <p id="wizHeroSub">Thank you for helping! Please provide details about the item so we can return it to its owner.</p></div>
+    <div class="art"><i class="fa-solid fa-box-open" id="wizHeroIcon"></i></div>
+  </div>
+  <div class="step-indicator" id="stepIndicator"></div>
+  <div class="wiz-grid">
+    <div class="wiz-card">
+      <form id="wizForm" onsubmit="return false;">
+        <div class="tab-panel show" id="wstep-1">
+          <h3><i class="fa-regular fa-file-lines" style="color:var(--indigo-600);"></i> Item Details</h3>
+          <div class="row-2">
+            <div><label>Category <span class="req">*</span></label><select id="wCategory" onchange="updatePreview()"></select></div>
+            <div><label>Item Name <span class="req">*</span></label><input type="text" id="wItemName" placeholder="e.g. Black Wallet" oninput="updatePreview()"></div>
+          </div>
+          <label>Description <span class="req">*</span></label>
+          <textarea id="wDescription" maxlength="300" placeholder="Provide details about the item (color, brand, size, any unique features, etc.)" oninput="updatePreview();document.getElementById('charCount').textContent=wDescription.value.length+'/300';"></textarea>
+          <div class="char-count" id="charCount">0/300</div>
+          <label>Upload Photos (Optional)</label>
+          <div style="font-size:11.5px;color:var(--ink-500);margin:-4px 0 10px;">Clear photos help the owner identify the item. Up to 3 images.</div>
+          <div class="upload-row" id="uploadRow"></div>
+          <input type="file" id="fileInput" accept="image/*" multiple class="hidden" onchange="handleFiles(this.files)">
+        </div>
+        <div class="tab-panel" id="wstep-2">
+          <h3><i class="fa-solid fa-location-dot" style="color:var(--indigo-600);"></i> Where &amp; When</h3>
+          <label>Location <span class="req">*</span></label><input type="text" id="wLocation" placeholder="e.g. Library, 2nd floor" oninput="updatePreview()">
+          <label>Date <span class="req">*</span></label><input type="date" id="wDate" oninput="updatePreview()">
+        </div>
+        <div class="tab-panel" id="wstep-3">
+          <h3><i class="fa-regular fa-address-card" style="color:var(--indigo-600);"></i> Your Details</h3>
+          <label>Contact Info <span class="req">*</span></label><input type="text" id="wContact" placeholder="10-digit phone number" maxlength="10" oninput="updatePreview()">
+          <div style="font-size:12px;color:var(--ink-500);background:var(--bg);border-radius:10px;padding:10px 12px;"><i class="fa-solid fa-circle-info" style="color:var(--indigo-600);"></i> This will only be shown to people viewing this listing on the board.</div>
+        </div>
+        <div class="tab-panel" id="wstep-4">
+          <h3><i class="fa-solid fa-check-double" style="color:var(--indigo-600);"></i> Review &amp; Submit</h3>
+          <div id="reviewList"></div>
+        </div>
+        <div class="wiz-nav">
+          <button type="button" class="btn btn-outline" id="wizBackBtn" onclick="goStep(-1)"><i class="fa-solid fa-arrow-left"></i> Back</button>
+          <button type="button" class="btn btn-primary" id="wizNextBtn" onclick="goStep(1)">Next <i class="fa-solid fa-arrow-right"></i></button>
+        </div>
+      </form>
+    </div>
+    <div class="preview-card">
+      <div class="wiz-card">
+        <h3><i class="fa-regular fa-eye" style="color:var(--indigo-600);"></i> Item Preview</h3>
+        <div class="preview-thumb" id="previewThumb"><i class="fa-solid fa-box"></i></div>
+        <div class="preview-row"><i class="fa-solid fa-tags"></i><span class="lbl">Category</span><span class="val" id="pvCategory">--</span></div>
+        <div class="preview-row"><i class="fa-regular fa-file-lines"></i><span class="lbl">Item Name</span><span class="val" id="pvName">--</span></div>
+        <div class="preview-row"><i class="fa-regular fa-comment"></i><span class="lbl">Description</span><span class="val" id="pvDesc">--</span></div>
+        <div class="preview-row"><i class="fa-solid fa-location-dot"></i><span class="lbl" id="pvLocLbl">Location</span><span class="val" id="pvLoc">--</span></div>
+        <div class="preview-row"><i class="fa-regular fa-calendar"></i><span class="lbl" id="pvDateLbl">Date</span><span class="val" id="pvDate">--</span></div>
+        <div class="next-box">
+          <div class="h"><i class="fa-solid fa-bell"></i> What happens next?</div>
+          <div class="line"><i class="fa-solid fa-check"></i> Your item will be visible to the campus community on the board.</div>
+          <div class="line"><i class="fa-solid fa-check"></i> We'll notify you if someone submits a return request on it.</div>
+          <div class="line" id="pointsLine"><i class="fa-solid fa-star" style="color:var(--gold);"></i> Earn reward points when a found item is returned to its owner.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="trust-bar" id="trustBar">
+  <div class="box">
+    <div><i class="fa-solid fa-shield-halved" style="color:var(--indigo-600);margin-right:8px;"></i><b>Your information is safe with us.</b> We only use your details to help return the item.</div>
+    <div>Need help? <a href="#" onclick="comingSoon(event,'Support')">Contact our support team</a></div>
+  </div>
+</div>
+
+<!-- ============================================================ DASHBOARD (image 2 sidebar layout) ============================================================= -->
+<div class="hidden" id="myitemsPage">
+  <div class="dash-wrap">
+    <aside class="dash-sidebar">
+      <div class="dash-side-link active" data-sec="overview" onclick="showDashSection('overview')"><i class="fa-solid fa-table-columns"></i> Dashboard</div>
+      <div class="dash-side-link" onclick="showBoardPage(null,'lost')"><i class="fa-regular fa-bell"></i> Lost Items</div>
+      <div class="dash-side-link" onclick="showBoardPage(null,'found')"><i class="fa-solid fa-box-open"></i> Found Items</div>
+      <div class="dash-side-divider"></div>
+      <div class="dash-side-link" data-sec="reports" onclick="showDashSection('reports')"><i class="fa-regular fa-file-lines"></i> My Reports</div>
+      <div class="dash-side-link" data-sec="claims" onclick="showDashSection('claims')"><i class="fa-regular fa-hand"></i> My Returns</div>
+      <div class="dash-side-link" data-sec="approvals" onclick="showDashSection('approvals')"><i class="fa-solid fa-user-check"></i> Return Approvals</div>
+      <div class="dash-side-link" data-sec="favorites" onclick="showDashSection('favorites')"><i class="fa-regular fa-star"></i> Favorites</div>
+      <div class="dash-side-link" data-sec="leaderboard" onclick="showDashSection('leaderboard')"><i class="fa-solid fa-trophy"></i> Leaderboard</div>
+      <div class="dash-side-divider"></div>
+      <div class="dash-side-link" onclick="comingSoon(event,'Messages')"><i class="fa-regular fa-envelope"></i> Messages</div>
+      <div class="dash-side-link" onclick="comingSoon(event,'Notifications')"><i class="fa-regular fa-bell"></i> Notifications</div>
+      <div class="dash-side-link" onclick="comingSoon(event,'Settings')"><i class="fa-solid fa-gear"></i> Settings</div>
+      <div class="dash-side-link" onclick="comingSoon(event,'Help & Support')"><i class="fa-regular fa-circle-question"></i> Help &amp; Support</div>
+
+      <div class="help-widget">
+        <div class="ic"><i class="fa-solid fa-box-open"></i></div>
+        <p>Help others get their items back!</p>
+        <button class="btn btn-primary btn-sm" onclick="startWizard('found')">Report an Item</button>
+      </div>
+    </aside>
+
+    <main class="dash-main">
+      <div class="dash-topbar">
+        <div class="dash-search"><i class="fa-solid fa-magnifying-glass"></i><input type="text" id="dashSearchInput" placeholder="Search for items (e.g. wallet, phone, keys...)" onkeydown="if(event.key==='Enter')dashSearch()"></div>
+        <div class="bell-wrap" onclick="comingSoon(event,'Notifications')"><i class="fa-regular fa-bell"></i><span class="dot">3</span></div>
+      </div>
+
+      <!-- OVERVIEW -->
+      <div class="tab-panel show" id="dsec-overview">
+        <div class="welcome-banner"><h2 id="welcomeName">Welcome back! 👋</h2><p>Here's what's happening with your listings on campus today.</p></div>
+
+        <div class="notice-banner" id="noticeBanner">
+          <i class="fa-solid fa-bell bell-ic"></i>
+          <div><b>Important Notice</b><p>Keep your belongings safe. Always double-check before leaving any place.</p></div>
+          <button class="notice-close" onclick="document.getElementById('noticeBanner').classList.add('hidden')"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+
+        <div class="stat-grid" id="dashStatGrid"></div>
+
+        <div class="dash-grid-2">
+          <div class="panel">
+            <div class="panel-head"><h3>Activity Overview</h3><a href="#" onclick="showDashSection('reports');return false;">My Reports →</a></div>
+            <div class="donut-row">
+              <div class="donut" id="activityDonut"><div class="donut-hole"><b id="donutTotal">0</b><span>Total</span></div></div>
+              <div style="flex:1;">
+                <div class="legend-item"><span class="legend-dot" style="background:var(--red);"></span> Lost <span id="legendLost" style="margin-left:auto;font-weight:800;"></span></div>
+                <div class="legend-item"><span class="legend-dot" style="background:var(--green);"></span> Found <span id="legendFound" style="margin-left:auto;font-weight:800;"></span></div>
+                <div class="legend-item"><span class="legend-dot" style="background:var(--gray);"></span> Claimed / Resolved <span id="legendClaimed" style="margin-left:auto;font-weight:800;"></span></div>
+              </div>
+            </div>
+          </div>
+          <div class="panel">
+            <div class="panel-head"><h3>Recent Reports</h3><a href="#" onclick="showDashSection('reports');return false;">View All →</a></div>
+            <div id="recentReports"></div>
+          </div>
+        </div>
+
+        <div class="panel" style="margin-bottom:20px;">
+          <div class="panel-head"><h3>My Recent Activity</h3></div>
+          <div class="table-wrap"><table><thead><tr><th>Item</th><th>Type</th><th>Status</th><th>Date</th><th></th></tr></thead><tbody id="recentActivityBody"></tbody></table></div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-head"><h3>Quick Actions</h3></div>
+          <div class="quick-grid">
+            <div class="quick-btn" onclick="startWizard('lost')"><i class="fa-regular fa-image"></i> Report Lost Item</div>
+            <div class="quick-btn" onclick="startWizard('found')"><i class="fa-solid fa-tag"></i> Report Found Item</div>
+            <div class="quick-btn" onclick="showBoardPage(null,'all')"><i class="fa-solid fa-magnifying-glass"></i> Search Items</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- MY REPORTS -->
+      <div class="tab-panel" id="dsec-reports">
+        <div class="panel-head" style="margin-bottom:14px;"><h3 style="font-size:19px;">My Reported Items</h3><button class="btn btn-green btn-sm" onclick="startWizard('lost')"><i class="fa-solid fa-plus"></i> Report New</button></div>
+        <div id="tab-reported"></div>
+      </div>
+      <!-- MY RETURNS -->
+      <div class="tab-panel" id="dsec-claims">
+        <h3 class="section-title">My Returns</h3>
+        <div id="tab-claimsmade"></div>
+      </div>
+      <!-- CLAIM APPROVALS -->
+      <div class="tab-panel" id="dsec-approvals">
+        <h3 class="section-title">Return Approvals</h3>
+        <div id="tab-approvals"></div>
+      </div>
+      <!-- FAVORITES -->
+      <div class="tab-panel" id="dsec-favorites">
+        <h3 class="section-title">Favorites</h3>
+        <div class="board-grid" id="favoritesGrid"></div>
+      </div>
+      <!-- LEADERBOARD -->
+      <div class="tab-panel" id="dsec-leaderboard">
+        <h3 class="section-title">🏆 Campus Champions</h3>
+        <div id="tab-leaderboard"></div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<!-- ============================================================ ADMIN ============================================================= -->
+<div class="page hidden" id="adminPage">
+  <div class="page-hero" style="background:linear-gradient(120deg,#ece5ff,#f6f0ff);">
+    <div><h1>Admin Dashboard</h1><p>Platform-wide oversight — all items, moderation, and usage statistics.</p></div>
+    <div class="art"><i class="fa-solid fa-user-shield"></i></div>
+  </div>
+  <div class="stat-grid" style="margin-bottom:22px;">
+    <div class="stat-card"><div class="top-row"><div class="ic" style="background:var(--indigo-600);"><i class="fa-solid fa-box-open"></i></div><div><div class="num" id="statTotalItems">0</div><div class="lbl">Total Items</div></div></div></div>
+    <div class="stat-card"><div class="top-row"><div class="ic" style="background:var(--gold);"><i class="fa-solid fa-hand"></i></div><div><div class="num" id="statTotalClaims">0</div><div class="lbl">Total Returns</div></div></div></div>
+    <div class="stat-card"><div class="top-row"><div class="ic" style="background:var(--green);"><i class="fa-solid fa-circle-check"></i></div><div><div class="num" id="statResolved">0</div><div class="lbl">Resolved Items</div></div></div></div>
+    <div class="stat-card"><div class="top-row"><div class="ic" style="background:#3f65e0;"><i class="fa-solid fa-users"></i></div><div><div class="num" id="statTotalUsers">0</div><div class="lbl">Total Users</div></div></div></div>
+  </div>
+  <div class="section-title">All Items Overview</div>
+  <div class="table-wrap" style="margin-bottom:24px;"><table><thead><tr><th>Item</th><th>Category</th><th>Status</th><th>Reported By</th><th>Date</th><th></th></tr></thead><tbody id="adminItemsBody"></tbody></table></div>
+  <div class="section-title">Action Log</div>
+  <div class="table-wrap"><table><thead><tr><th>Timestamp</th><th>Admin</th><th>Action</th><th>Item</th></tr></thead><tbody id="adminLogBody"></tbody></table></div>
+</div>
+
+<!-- ============================================================ MODALS ============================================================= -->
+<div class="modal-overlay" id="adminLoginModal"><div class="modal-box" style="background:var(--ink-900);color:#fff;">
+  <button class="modal-close" onclick="closeModal('adminLoginModal')" style="background:rgba(255,255,255,.1);color:#cfcde3;"><i class="fa-solid fa-xmark"></i></button>
+  <div style="width:52px;height:52px;border-radius:14px;background:var(--indigo-600);display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:14px;"><i class="fa-solid fa-user-shield"></i></div>
+  <h3 style="color:#fff;">Admin Login</h3>
+  <div class="sub" style="color:#a7a4c8;">Restricted access — for platform moderators only.</div>
+  <form onsubmit="handleAdminLogin(event)">
+    <label style="color:#cfcde3;">ZPRN ID</label><input type="text" id="adminLoginZprn" placeholder="e.g. ADMIN001" required style="background:#231f3d;border-color:#3a3752;color:#fff;">
+    <label style="color:#cfcde3;">Password</label><input type="password" id="adminLoginPassword" placeholder="••••••••" required style="background:#231f3d;border-color:#3a3752;color:#fff;">
+    <button class="btn btn-primary" type="submit"><i class="fa-solid fa-right-to-bracket"></i> Sign In as Admin</button>
+  </form>
+  <div class="modal-foot" style="color:#a7a4c8;">Not an admin? <a onclick="switchModal('adminLoginModal','loginModal')" style="color:var(--indigo-500);">Go to Student Login</a></div>
+</div></div>
+
+<div class="modal-overlay" id="loginModal"><div class="modal-box">
+  <button class="modal-close" onclick="closeModal('loginModal')"><i class="fa-solid fa-xmark"></i></button>
+  <h3>Sign In</h3><div class="sub">Use your college-issued ZPRN ID and password.</div>
+  <form onsubmit="handleLogin(event)">
+    <label>ZPRN ID</label><input type="text" id="loginZprn" placeholder="e.g. 125U123456" maxlength="10" required>
+    <label>Password</label><input type="password" id="loginPassword" placeholder="••••••••" required>
+    <button class="btn btn-primary" type="submit"><i class="fa-solid fa-right-to-bracket"></i> Sign In</button>
+  </form>
+  <div class="modal-foot">New here? <a onclick="switchModal('loginModal','registerModal')">Create an account</a></div>
+</div></div>
+
+<div class="modal-overlay" id="registerModal"><div class="modal-box">
+  <button class="modal-close" onclick="closeModal('registerModal')"><i class="fa-solid fa-xmark"></i></button>
+  <h3>Create Account</h3><div class="sub">Sign up with your name, ZPRN ID, and a password.</div>
+  <form onsubmit="handleRegister(event)">
+    <label>Full Name</label><input type="text" id="regName" placeholder="e.g. Sarthak Gaikwad" required>
+    <label>ZPRN ID</label><input type="text" id="regZprn" placeholder="e.g. 125U123456" maxlength="10" required>
+    <label>Password</label><input type="password" id="regPassword" placeholder="Create a password" required>
+    <button class="btn btn-primary" type="submit"><i class="fa-solid fa-user-plus"></i> Create Account</button>
+  </form>
+  <div class="modal-foot">Already registered? <a onclick="switchModal('registerModal','loginModal')">Sign in</a></div>
+</div></div>
+
+<div class="modal-overlay" id="claimModal"><div class="modal-box">
+  <button class="modal-close" onclick="closeModal('claimModal')"><i class="fa-solid fa-xmark"></i></button>
+  <h3 id="claimModalTitle">Submit a Request</h3><div class="sub" id="claimSub">Tell the reporter why you believe this item is yours.</div>
+  <form onsubmit="handleClaimSubmit(event)">
+    <label>Message (optional)</label><textarea id="claimMessage" placeholder="Describe how you can identify this item..."></textarea>
+    <label>Contact Info <span style="color:var(--red);">*</span></label><input type="text" id="claimContactInfo" placeholder="10-digit phone number" required>
+    <button class="btn btn-primary" type="submit" id="claimSubmitBtn"><i class="fa-regular fa-paper-plane"></i> Submit Request</button>
+  </form>
+</div></div>
+
+<div class="modal-overlay" id="detailsModal"><div class="modal-box">
+  <button class="modal-close" onclick="closeModal('detailsModal')"><i class="fa-solid fa-xmark"></i></button>
+  <div class="detail-thumb" id="detailThumb"></div>
+  <h3 id="detailName">Item</h3><div class="sub" id="detailCategory">Category</div>
+  <div style="font-size:13.5px;color:var(--ink-700);display:flex;flex-direction:column;gap:8px;margin-bottom:16px;">
+    <div><i class="fa-solid fa-location-dot" style="color:var(--indigo-600);width:16px;"></i> <span id="detailLoc"></span></div>
+    <div><i class="fa-regular fa-calendar" style="color:var(--indigo-600);width:16px;"></i> <span id="detailDate"></span></div>
+    <div><i class="fa-solid fa-user" style="color:var(--indigo-600);width:16px;"></i> Reported by <span id="detailReporter"></span></div>
+    <div><i class="fa-solid fa-phone" style="color:var(--indigo-600);width:16px;"></i> <span id="detailContact"></span></div>
+    <div id="detailDescWrap"><i class="fa-regular fa-file-lines" style="color:var(--indigo-600);width:16px;"></i> <span id="detailDesc"></span></div>
+    <div><i class="fa-solid fa-hand" style="color:var(--indigo-600);width:16px;"></i> <span id="detailClaimCount"></span></div>
+  </div>
+  <div style="display:flex;gap:10px;">
+    <button class="bookmark-outline" id="detailBookmarkBtn" style="width:44px;height:44px;flex-shrink:0;" onclick="toggleBookmark(activeDetailItemId)"><i class="fa-regular fa-bookmark"></i></button>
+    <button class="btn btn-primary" id="detailClaimBtn" style="flex:1;justify-content:center;padding:12px;" onclick="openClaimModal()"><i class="fa-regular fa-hand"></i> Claim / Return This Item</button>
+  </div>
+</div></div>
+
+<div class="toast" id="toast"><i class="fa-solid fa-circle-check"></i> <span id="toastMsg"></span></div>
+
+<script src="app.js">
+</script>
+</body>
+</html>
